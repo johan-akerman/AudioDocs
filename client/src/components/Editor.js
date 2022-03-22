@@ -5,14 +5,13 @@ import Cursor from "./Cursor";
 
 export default function Editor() {
   const [socket, setSocket] = useState();
-  const [coordinates, setCoordinates] = useState({
-    x: 0,
-    y: 0,
-  });
+  const [client, setClient] = useState();
+  const [clients, setClients] = useState([]);
 
   useEffect(() => {
     const s = io("http://localhost:3001");
     setSocket(s);
+
     return () => {
       s.disconnect();
     };
@@ -21,14 +20,36 @@ export default function Editor() {
   useEffect(() => {
     if (socket == null) return;
 
+    socket.on("connected", (arg) => {
+      setClient(arg);
+    });
+
+    socket.on("newConnection", (arg) => {
+      if (client !== arg) {
+        setClients([
+          ...clients,
+          {
+            id: arg,
+            x: 100,
+            y: 100,
+          },
+        ]);
+      }
+    });
+
     socket.on("moved", (arg) => {
-      setCoordinates(arg);
+      setClients([
+        {
+          id: arg.id,
+          x: arg.x,
+          y: arg.y,
+        },
+      ]);
     });
   }, [socket]);
 
   const moveMouse = (e) => {
-    setCoordinates({ x: e.clientX, y: e.clientY });
-    socket.emit("move", { x: coordinates.x, y: coordinates.y });
+    socket.emit("move", { id: client, x: e.clientX, y: e.clientY });
   };
 
   return (
@@ -36,7 +57,9 @@ export default function Editor() {
       className="bg-white mx-auto w-full h-full shadow-lg p-12 rounded-sm"
       onMouseMove={(e) => moveMouse(e)}
     >
-      <Cursor coordinates={coordinates} name="Johan" />
+      {clients?.map((client) => (
+        <Cursor client={client} key={client.id} />
+      ))}
     </div>
   );
 }

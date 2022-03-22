@@ -1,17 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowPointer } from "@fortawesome/free-solid-svg-icons";
 
-export default function Cursor({ coordinates, name }) {
+export default function Cursor({ client }) {
   return (
     <div
       className="fixed"
       style={{
-        left: coordinates.x,
-        top: coordinates.y,
+        left: client.x,
+        top: client.y,
       }}
     >
-      <div className="bg-green-500 h-5 w-5 rounded-full"></div>
-      <div className="ml-6 left-32 bg-green-500 text-white px-2 py-1 text-sm rounded-md">
-        {name}
+      <FontAwesomeIcon
+        icon={faArrowPointer}
+        className="text-green-500 text-xl"
+      />
+      <div className="ml-2 bg-green-500 text-white px-2 py-1 text-sm rounded-md">
+        {client.id}
       </div>
     </div>
   );

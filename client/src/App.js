@@ -1,6 +1,5 @@
 import Editor from "./components/Editor";
 import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
 
 function App() {
   return (
