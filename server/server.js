@@ -10,7 +10,10 @@ io.on("connection", (client) => {
   client.broadcast.emit("newConnection", client.id);
 
   client.on("move", (arg) => {
-    console.log(arg.id + ": " + arg.x + ", " + arg.y);
     client.broadcast.emit("moved", arg);
+  });
+
+  client.on("typed", (arg) => {
+    client.broadcast.emit("wrote", arg);
   });
 });

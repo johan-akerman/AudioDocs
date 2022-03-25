@@ -7,6 +7,25 @@ export default function Editor() {
   const [socket, setSocket] = useState();
   const [client, setClient] = useState();
   const [clients, setClients] = useState([]);
+  const [message, setMessage] = useState([
+    {
+      word: "hej",
+      start: 0,
+      end: 1,
+    },
+    {
+      word: "på",
+      start: 1,
+      end: 2,
+    },
+    {
+      word: "dig",
+      start: 2,
+      end: 3,
+    },
+  ]);
+
+  const [text, setText] = useState("");
 
   useEffect(() => {
     const s = io("http://localhost:3001");
@@ -16,6 +35,14 @@ export default function Editor() {
       s.disconnect();
     };
   }, []);
+
+  useEffect(() => {
+    let tmp = "";
+    message.forEach((item) => (tmp += item.word + " "));
+    setText(tmp);
+  }, [message]);
+
+  useEffect(() => {}, [text]);
 
   useEffect(() => {
     if (socket == null) return;
@@ -46,20 +73,39 @@ export default function Editor() {
         },
       ]);
     });
+
+    socket.on("wrote", (arg) => {
+      setText(arg);
+    });
   }, [socket]);
 
   const moveMouse = (e) => {
     socket.emit("move", { id: client, x: e.clientX, y: e.clientY });
   };
 
+  const typed = (text) => {
+    setText(text);
+    socket.emit("typed", text);
+  };
+
   return (
     <div
-      className="bg-white mx-auto w-full h-full shadow-lg p-12 rounded-sm"
+      className="bg-gray-200 mx-auto w-full h-full shadow-lg p-12 rounded-sm"
       onMouseMove={(e) => moveMouse(e)}
     >
       {clients?.map((client) => (
         <Cursor client={client} key={client.id} />
       ))}
+
+      <div className="w-3/5 mx-auto bg-white h-96 p-6 rounded-md">
+        <textarea
+          className="text-lg w-full focus:outline-none h-full resize-none"
+          id="textarea"
+          rows="3"
+          value={text}
+          onChange={(e) => typed(e.target.value)}
+        ></textarea>
+      </div>
     </div>
   );
 }
