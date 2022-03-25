@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import "quill/dist/quill.snow.css";
 import { io } from "socket.io-client";
 import Cursor from "./Cursor";
+import Comment from "./Comment";
 
 export default function Editor() {
   const [socket, setSocket] = useState();
@@ -96,6 +97,7 @@ export default function Editor() {
       {clients?.map((client) => (
         <Cursor client={client} key={client.id} />
       ))}
+      <Comment />
 
       <div className="w-3/5 mx-auto bg-white h-96 p-6 rounded-md">
         <textarea

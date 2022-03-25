@@ -1,5 +1,6 @@
 import Editor from "./components/Editor";
 import Navbar from "./components/Navbar";
+import Comment from "./components/Comment";
 
 function App() {
   return (
