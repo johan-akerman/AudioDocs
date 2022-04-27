@@ -1,8 +1,8 @@
-import Editor from "./components/Editor";
+import React from "react";
 import Navbar from "./components/Navbar";
-import Comment from "./components/Comment";
+import Editor from "./components/Editor";
 
-function App() {
+export default function Room() {
   return (
     <div className="App bg-gray-100 flex flex-col h-screen justify-between">
       <Navbar />
@@ -10,5 +10,3 @@ function App() {
     </div>
   );
 }
-
-export default App;
