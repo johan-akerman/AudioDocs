@@ -15,7 +15,7 @@ export default function Cursor({ client }) {
         icon={faArrowPointer}
         className="text-green-500 text-xl"
       />
-      <div className="ml-2 bg-green-500 text-white px-2 py-1 text-sm rounded-md">
+      <div className="ml-2 bg-purple text-black px-2 py-1 text-sm rounded-md">
         {client.id}
       </div>
     </div>

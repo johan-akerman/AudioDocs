@@ -1,9 +1,7 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "quill/dist/quill.snow.css";
 import { io } from "socket.io-client";
 import Cursor from "./Cursor";
-import Comment from "./Comment";
-import Form from "../Join";
 
 export default function Editor() {
   const [socket, setSocket] = useState();
@@ -95,7 +93,6 @@ export default function Editor() {
       className="bg-gray-200 mx-auto w-full h-full shadow-lg p-12 rounded-sm"
       onMouseMove={(e) => moveMouse(e)}
     >
-      <Form />
       {clients?.map((client) => (
         <Cursor client={client} key={client.id} />
       ))}
